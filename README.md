@@ -1,2 +1,11 @@
-# PortfoliKhumo
-An interactive playground where my skills become experiences, not just bullet points
+## styles 
+
+I am using styled components, but there will be pages where I use pure css 
+
+##### Notes
+
+- positon property specifies the type of positioning method used for an element
+- Static being the default, where elements render in order as they appear in the doc flow.
+- there is absolute, where an element is positioned relative to its first positioned ancestor element
+- fixed - The element is positioned relative to the browser window
+- relative - The element is positioned relative to its normal position, so "left:20px" adds 20 pixels to the element's LEFT position
