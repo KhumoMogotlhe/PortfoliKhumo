@@ -14,3 +14,16 @@ I am using styled components, but there will be pages where I use pure css
 
 - max-width defines the maximum width of an element. It prevents the element's width from being larger than the specific value. 
 - it is useful for creating responsive layouts and to ensure content readability across varios screen sizes.
+
+#### Positioning of elements 
+- I wanted the page number on the left side of each page so I used 
+```
+bottom : 2 rem 
+left: 3rem;
+
+and for the button to be in the middle right 
+
+  bottom: 2rem;    /* ← This puts it at the bottom */
+  right: 3rem;     /* ← This puts it on the right */
+```
+

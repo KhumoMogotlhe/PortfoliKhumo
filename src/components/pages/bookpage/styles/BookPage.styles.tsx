@@ -3,7 +3,9 @@ import styled from 'styled-components';
 export const BaseContainer = styled.div`
 position: relative;
 display: flex;
-max-width: 800px;
+width: 800px;
+max-width: 90vw;
+height: 600px;
 background: white;
 margin: 2rem auto;
 padding: 3rem;
@@ -17,20 +19,22 @@ export const PageContent = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  padding-bottom: 5rem;
 `;
 
 export const ChapterTitle = styled.h1`
   font-size: 2rem;
   font-weight: 600;
-  color: white;
+  color: pink;
   font-style: italic;
 `;
 
 export const PageNumber = styled.span`
   position: absolute;
-  bottom: 0rem;
-  right: 3rem;
+  bottom: 2rem;
+  left: 3rem;
   font-size: 0.9rem;
   color: red;
   font-style: italic;
@@ -55,12 +59,14 @@ export const Arrow = styled.span`
 `;
 
 export const ButtonPrompt = styled.div`
+ position: absolute;  
+  right: 4rem;        
+  top: 45%;            
+  transform: translateY(-100%);  
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 8;
-  padding-right: 1rem;
-  padding-bottom: 2rem;
+  align-items: center;  
+  gap: 0.5rem;
 `;
 
 export const PromptText = styled.p`
@@ -69,4 +75,15 @@ export const PromptText = styled.p`
   font-style: italic;
   text-align: right;
   max-width: 250px;
+`;
+
+export const PageHeader = styled.div`
+  border-bottom: 2px solid;
+  padding-bottom: 2rem;
+`;
+
+export const IntroBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
