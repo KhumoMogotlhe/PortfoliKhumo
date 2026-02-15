@@ -1,13 +1,13 @@
 import React from "react";
 import type { NextButtonProps } from "./NextButton.types";
-import { StyledButton } from "./styles/NextButton.styles";
+import { StoryButton } from "./styles/NextButton.styles";
 
-const NextButton: React.FC<NextButtonProps> = ({ onClick }) => {
-    return (
-      <StyledButton onClick={onClick}>
-        Next Page
-      </StyledButton>
-    );
-  };
-  
-  export default NextButton;
+const NextButton: React.FC<NextButtonProps> = ({ onClick, label = "Next", position = "right" }) => {
+  return (
+    <StoryButton onClick={onClick} position={position}>
+      {label}
+    </StoryButton>
+  );
+};
+
+export default NextButton;

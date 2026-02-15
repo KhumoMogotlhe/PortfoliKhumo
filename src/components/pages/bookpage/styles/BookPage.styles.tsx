@@ -6,12 +6,12 @@ display: flex;
 width: 800px;
 max-width: 90vw;
 height: 600px;
-background: white;
+background:  #fdfbf7;
 margin: 2rem auto;
 padding: 3rem;
 `;
 
-export const TextContainer = styled.div`
+export const IntroText = styled.div`
 display: flex;
 `
 
@@ -36,7 +36,7 @@ export const PageNumber = styled.span`
   bottom: 2rem;
   left: 3rem;
   font-size: 0.9rem;
-  color: red;
+  color: #6b6b6b;
   font-style: italic;
 `;
 
@@ -59,10 +59,9 @@ export const Arrow = styled.span`
 `;
 
 export const ButtonPrompt = styled.div`
- position: absolute;  
+  position: absolute;  
   right: 4rem;        
   top: 45%;            
-  transform: translateY(-100%);  
   display: flex;
   flex-direction: column;
   align-items: center;  
@@ -87,3 +86,72 @@ export const IntroBlock = styled.div`
   flex-direction: column;
   gap: 0.5rem;
 `;
+
+export const Section = styled.div`
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+export const SubSectionTitle = styled.h3`
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 0.5rem;
+`;
+
+export const SectionTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.5rem;
+`;
+
+export const TechList = styled.ul`
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-left: 0;
+`;
+
+
+
+export const TechCard = styled.div`
+  width: 150px;
+  height: 180px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+`;
+
+export const Icon = styled.img`
+  width: 48px;
+  height: 48px;
+`;
+
+export const TechName = styled.h4`
+  font-size: 1rem;
+  font-weight: 600;
+`;
+
+export const TechDescription = styled.p`
+  font-size: 0.85rem;
+  text-align: center;
+  color: #555;
+`;
+
+
+
