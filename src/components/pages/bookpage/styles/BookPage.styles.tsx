@@ -5,10 +5,13 @@ position: relative;
 display: flex;
 width: 800px;
 max-width: 90vw;
-height: 600px;
-background:  #fdfbf7;
+min-height: 600px;
+max-height: 90vw;
+height: auto;
+background: #fdfbf7;
 margin: 2rem auto;
 padding: 3rem;
+overflow-y: auto;
 `;
 
 export const IntroText = styled.div`
@@ -58,14 +61,38 @@ export const Arrow = styled.span`
   }
 `;
 
+export const ArrowSVG = styled.svg`
+  width: 100px;
+  height: 50px;
+  margin-left: 1rem;
+  
+  path {
+    stroke: #8b7355;
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 5, 5;
+    animation: dash 2s linear infinite;
+  }
+  
+  polygon {
+    fill: #8b7355;
+  }
+  
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -20;
+    }
+  }
+`;
+
 export const ButtonPrompt = styled.div`
   position: absolute;  
-  right: 4rem;        
-  top: 45%;            
+  right: 10rem;         /* Move it left of the button */
+  bottom: 4.5rem;      /* Changed from top: 45% to bottom to match button */
   display: flex;
-  flex-direction: column;
-  align-items: center;  
-  gap: 0.5rem;
+  flex-direction: row;
+  align-items: center;  /* Changed to flex-end for right alignment */
+  gap: 1rem;
 `;
 
 export const PromptText = styled.p`
@@ -74,6 +101,7 @@ export const PromptText = styled.p`
   font-style: italic;
   text-align: right;
   max-width: 250px;
+  bottom: 2rem;
 `;
 
 export const PageHeader = styled.div`
