@@ -1,5 +1,5 @@
 import React from 'react';
-import { Arrow, ArrowSVG, BaseContainer, ButtonPrompt, IntroBlock, IntroText, PageContent, PageNumber, PromptText } from './styles/BookPage.styles';
+import { ArrowSVG, BaseContainer, ButtonPrompt, IntroBlock, IntroText, PageContent, PageNumber, PromptText } from './styles/BookPage.styles';
 import NextButton from '../../buttons/next-button/NextButton';
 import type { BookPageProps } from './BookPage.types';
 

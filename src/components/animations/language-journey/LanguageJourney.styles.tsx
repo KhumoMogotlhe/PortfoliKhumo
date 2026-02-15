@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion} from 'framer-motion';
 
 export const JourneyContainer = styled.div`
   margin: 2rem 0;
