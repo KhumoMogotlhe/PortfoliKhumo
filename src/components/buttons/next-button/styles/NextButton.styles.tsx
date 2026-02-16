@@ -1,24 +1,45 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const StoryButton = styled.button<{position: "left" | "right"}>`
+export const StyledNextButton = styled.button<{ position?: 'left' | 'right' }>`
   position: absolute;
   bottom: 2rem;
-  ${(props) => (props.position === "left" ? "left: 3rem;" : "right: 3rem;")}
-  background: pink;
-  color: red;
+  ${props => props.position === 'left' ? 'left: 3rem;' : 'right: 3rem;'}
+  background: #8b7355;
+  color: #fdfbf7;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    transform: translateY(-2px); // subtle hover lift
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: ${props => props.position === 'left' ? 'translateX(-5px)' : 'translateX(5px)'} scale(1.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   }
 
-  &::after {
-    content: ${(props) => (props.position === "left" ? "' ←'" : "' →'")};
+  &:active {
+    transform: ${props => props.position === 'left' ? 'translateX(-5px)' : 'translateX(5px)'} scale(0.95);
+  }
+
+  @media (max-width: 768px) {
+    ${props => props.position === 'left' ? 'left: 2rem;' : 'right: 2rem;'}
+    bottom: 1.5rem;
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: 480px) {
+    ${props => props.position === 'left' ? 'left: 1rem;' : 'right: 1rem;'}
+    bottom: 1rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
   }
 `;

@@ -7,6 +7,7 @@ import './App.css'
 import BookPage from './components/pages/bookpage/BookPage';
 import { useState } from 'react';
 import SecondPage from './components/pages/second-page/SecondPage';
+import ThirdPage from './components/pages/third-page/ThirdPage';
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,10 +22,11 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {/* <GlobalStyles /> */}
-      {currentPage === 1 && <BookPage onNext={goToNextPage} />}
-      {currentPage === 2 && <SecondPage onNext={goToNextPage} onPrev={goToPrevPage} />}
-    </ThemeProvider>
+    {/* <GlobalStyles /> */}
+    {currentPage === 1 && <BookPage onNext={goToNextPage} />}
+    {currentPage === 2 && <SecondPage onNext={goToNextPage} onPrev={goToPrevPage} />}
+    {currentPage === 3 && <ThirdPage onNext={goToNextPage} onPrev={goToPrevPage} />}
+  </ThemeProvider>
   );
 }
 
