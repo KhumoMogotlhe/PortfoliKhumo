@@ -111,24 +111,24 @@ const ArchitectureDiagram = styled.div`
   max-width: 500px;
 `;
 
-const DiagramNode = styled(motion.div)<{ color?: string }>`
-  background: ${props => props.color || '#e8f4f8'};
-  border: 2px solid ${props => props.color ? `${props.color}dd` : '#4a90e2'};
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  margin: 0.5rem 0;
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #232f3e;
-`;
+// const DiagramNode = styled(motion.div)<{ color?: string }>`
+//   background: ${props => props.color || '#e8f4f8'};
+//   border: 2px solid ${props => props.color ? `${props.color}dd` : '#4a90e2'};
+//   border-radius: 8px;
+//   padding: 0.75rem 1rem;
+//   margin: 0.5rem 0;
+//   text-align: center;
+//   font-size: 0.9rem;
+//   font-weight: 600;
+//   color: #232f3e;
+// `;
 
-const Arrow = styled.div`
-  text-align: center;
-  color: #4a90e2;
-  font-size: 1.5rem;
-  margin: 0.25rem 0;
-`;
+// const Arrow = styled.div`
+//   text-align: center;
+//   color: #4a90e2;
+//   font-size: 1.5rem;
+//   margin: 0.25rem 0;
+// `;
 
 interface CloudServiceCardProps {
   icon: string;
