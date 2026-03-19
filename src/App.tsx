@@ -24,7 +24,6 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-    {/* <GlobalStyles /> */}
     {currentPage === 1 && <BookPage onNext={goToNextPage} />}
     {currentPage === 2 && <SecondPage onNext={goToNextPage} onPrev={goToPrevPage} />}
     {currentPage === 3 && <ThirdPage onNext={goToNextPage} onPrev={goToPrevPage} />}

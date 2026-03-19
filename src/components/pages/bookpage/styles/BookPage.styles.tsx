@@ -542,10 +542,6 @@ export const tokens = {
   sepia: '#8b7050',
   sepiaMid: '#9a7d5a',
   sepiaLight: '#c8b89a',
-  scene: '#1a1612',
-  stackA: '#c8b89a',
-  stackB: '#bfad8e',
-  stackC: '#b6a284',
 };
 
 // ─── Animations ───────────────────────────────────────────────────────────────
@@ -561,85 +557,40 @@ export const flipForward = keyframes`
 `;
 
 // ─── Scene ────────────────────────────────────────────────────────────────────
-// Desktop: dark background, book centered with perspective
-// Mobile: background matches paper so it's seamless full-screen
+// Full width, full height, paper background on all screen sizes.
+// No dark edges, no centering — the page IS the screen.
 
 export const Scene = styled.div`
-  background: ${tokens.scene};
+  background: ${tokens.paper};
   min-height: 100dvh;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2.5rem 1.25rem;
+  flex-direction: column;
   font-family: 'EB Garamond', Georgia, serif;
-
-  @media (max-width: 768px) {
-    background: ${tokens.paper};
-    padding: 0;
-    align-items: stretch;
-    min-height: 100dvh;
-  }
 `;
 
-// ─── Book perspective wrapper ─────────────────────────────────────────────────
+// ─── Book wrapper — no perspective constraint on desktop ──────────────────────
 
 export const BookWrapper = styled.div`
-  perspective: 1800px;
   width: 100%;
-  max-width: 520px;
-
-  @media (max-width: 768px) {
-    perspective: none;
-    max-width: 100%;
-  }
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const BookInner = styled.div`
   position: relative;
-  transform-style: preserve-3d;
-
-  @media (max-width: 768px) {
-    transform-style: flat;
-  }
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
-// ─── Stacked page depth layers ────────────────────────────────────────────────
-// Hidden on mobile — the 3D stack effect doesn't work without perspective
+// ─── Stack layers — subtle depth, visible on desktop only ────────────────────
+// Since we're full width now, stack layers show as a faint right-side shadow
+// rather than offset blocks
 
 export const StackLayer = styled.div<{ depth: 1 | 2 | 3 }>`
-  position: absolute;
-  inset: 0;
-  border-radius: 0 6px 6px 0;
-  pointer-events: none;
-  z-index: 0;
-
-  ${({ depth }) =>
-    depth === 1 &&
-    css`
-      transform: translate(5px, 5px);
-      background: ${tokens.stackA};
-      opacity: 0.65;
-    `}
-
-  ${({ depth }) =>
-    depth === 2 &&
-    css`
-      transform: translate(10px, 10px);
-      background: ${tokens.stackB};
-      opacity: 0.5;
-    `}
-
-  ${({ depth }) =>
-    depth === 3 &&
-    css`
-      transform: translate(15px, 15px);
-      background: ${tokens.stackC};
-      opacity: 0.4;
-    `}
-
-  @media (max-width: 768px) {
-    display: none;
-  }
+  display: none;
 `;
 
 // ─── The page ─────────────────────────────────────────────────────────────────
@@ -647,12 +598,9 @@ export const StackLayer = styled.div<{ depth: 1 | 2 | 3 }>`
 export const Page = styled.div<{ isFlipping?: boolean }>`
   position: relative;
   background: ${tokens.paper};
-  border-radius: 0 6px 6px 0;
-  min-height: 580px;
+  flex: 1;
+  min-height: 100dvh;
   height: auto;
-  transform-origin: left center;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
   z-index: 1;
 
   /* Paper line texture */
@@ -660,37 +608,22 @@ export const Page = styled.div<{ isFlipping?: boolean }>`
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: inherit;
     background: repeating-linear-gradient(
       0deg,
       transparent,
       transparent 27px,
-      rgba(160, 130, 90, 0.07) 27px,
-      rgba(160, 130, 90, 0.07) 28px
+      rgba(160, 130, 90, 0.06) 27px,
+      rgba(160, 130, 90, 0.06) 28px
     );
     pointer-events: none;
     z-index: 1;
   }
-
-  box-shadow:
-    4px 4px 24px rgba(0, 0, 0, 0.45),
-    inset -3px 0 12px rgba(0, 0, 0, 0.08);
 
   ${({ isFlipping }) =>
     isFlipping &&
     css`
       animation: ${flipForward} 0.85s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
     `}
-
-  /* ── Mobile: full screen, no 3D, no border-radius, no shadow ── */
-  @media (max-width: 768px) {
-    border-radius: 0;
-    min-height: 100dvh;
-    height: auto;
-    box-shadow: none;
-    transform: none !important;
-    animation: none !important;
-  }
 `;
 
 // ─── Torn / burnt edges ───────────────────────────────────────────────────────
@@ -710,13 +643,6 @@ export const TornEdge = styled.div<{ position: 'top' | 'bottom' }>`
     width: 100%;
     height: 20px;
   }
-
-  /* On mobile the scene bg is the same as paper, so use a darker tone
-     to still show the edge — override maskColor via a CSS var */
-  @media (max-width: 768px) {
-    height: 14px;
-    svg { height: 14px; }
-  }
 `;
 
 // ─── Overlays ─────────────────────────────────────────────────────────────────
@@ -724,11 +650,10 @@ export const TornEdge = styled.div<{ position: 'top' | 'bottom' }>`
 export const Vignette = styled.div`
   position: absolute;
   inset: 0;
-  border-radius: inherit;
   background: radial-gradient(
     ellipse at center,
     transparent 55%,
-    rgba(139, 110, 70, 0.2) 100%
+    rgba(139, 110, 70, 0.15) 100%
   );
   pointer-events: none;
   z-index: 2;
@@ -744,11 +669,11 @@ export const ScorchCorner = styled.div<{ corner: 'br' | 'tl' }>`
     css`
       bottom: 0;
       right: 0;
-      width: 100px;
-      height: 100px;
+      width: 180px;
+      height: 180px;
       background: radial-gradient(
         ellipse at bottom right,
-        rgba(30, 15, 0, 0.4) 0%,
+        rgba(30, 15, 0, 0.3) 0%,
         transparent 70%
       );
     `}
@@ -758,11 +683,11 @@ export const ScorchCorner = styled.div<{ corner: 'br' | 'tl' }>`
     css`
       top: 0;
       left: 0;
-      width: 70px;
-      height: 70px;
+      width: 120px;
+      height: 120px;
       background: radial-gradient(
         ellipse at top left,
-        rgba(30, 15, 0, 0.22) 0%,
+        rgba(30, 15, 0, 0.18) 0%,
         transparent 70%
       );
     `}
@@ -773,39 +698,37 @@ export const Spine = styled.div`
   left: 0;
   top: 0;
   bottom: 0;
-  width: 28px;
+  width: 32px;
   background: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0.28),
-    rgba(0, 0, 0, 0.07),
+    rgba(0, 0, 0, 0.12),
+    rgba(0, 0, 0, 0.03),
     transparent
   );
   z-index: 5;
   pointer-events: none;
-  border-radius: 0 0 0 6px;
-
-  @media (max-width: 768px) {
-    width: 18px;
-  }
 `;
 
 // ─── Page content layout ──────────────────────────────────────────────────────
+// Constrain the readable content to a comfortable max-width and center it
 
 export const PageContent = styled.div`
   position: relative;
   z-index: 6;
-  padding: 36px 32px 48px 44px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 40px 64px;
   display: flex;
   flex-direction: column;
-  min-height: 580px;
+  min-height: 100dvh;
 
   @media (max-width: 768px) {
-    padding: 28px 20px 40px 28px;
-    min-height: 100dvh;
+    padding: 32px 24px 48px;
   }
 
   @media (max-width: 480px) {
-    padding: 24px 16px 36px 22px;
+    padding: 24px 18px 40px;
   }
 `;
 
@@ -815,10 +738,10 @@ export const PageHeader = styled.div`
   align-items: baseline;
   border-bottom: 1px solid rgba(139, 110, 70, 0.2);
   padding-bottom: 0.75rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 
   @media (max-width: 480px) {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
   }
 `;
 
@@ -847,7 +770,7 @@ export const IntroBlock = styled.div`
 
 export const NameTitle = styled.h1`
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.2rem, 10vw, 3.25rem);
+  font-size: clamp(2.4rem, 6vw, 4rem);
   font-weight: 600;
   color: ${tokens.ink};
   line-height: 1.08;
@@ -856,7 +779,7 @@ export const NameTitle = styled.h1`
 
 export const RoleSubtitle = styled.p`
   font-family: 'EB Garamond', serif;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: ${tokens.sepia};
   font-style: italic;
   letter-spacing: 0.06em;
@@ -870,7 +793,7 @@ export const RoleSubtitle = styled.p`
 
 export const IntroText = styled.div`
   font-family: 'EB Garamond', serif;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: ${tokens.inkMid};
   line-height: 2;
 
@@ -890,27 +813,26 @@ export const Footer = styled.div`
   flex-direction: column;
   align-items: flex-end;
   gap: 0.75rem;
-  padding-top: 1.5rem;
+  padding-top: 2rem;
 
   @media (max-width: 480px) {
     align-items: center;
-    padding-top: 1rem;
-    /* Stick to bottom on mobile */
+    padding-top: 1.5rem;
     position: sticky;
     bottom: 0;
     background: ${tokens.paper};
     padding-bottom: 1.25rem;
-    margin-left: -22px;
-    margin-right: -16px;
-    padding-left: 22px;
-    padding-right: 16px;
+    margin-left: -18px;
+    margin-right: -18px;
+    padding-left: 18px;
+    padding-right: 18px;
     border-top: 1px solid rgba(139, 110, 70, 0.15);
   }
 `;
 
 export const PromptText = styled.p`
   font-family: 'EB Garamond', serif;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: ${tokens.sepiaMid};
   font-style: italic;
   text-align: right;
@@ -928,7 +850,6 @@ export const ButtonRow = styled.div`
   gap: 12px;
 
   @media (max-width: 480px) {
-    flex-direction: row;
     justify-content: center;
     width: 100%;
   }
@@ -960,7 +881,7 @@ export const ArrowSVG = styled.svg`
 
 export const ChapterTitle = styled.h2`
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
   font-weight: 400;
   font-style: italic;
   color: ${tokens.ink};
@@ -983,20 +904,19 @@ export const Section = styled.div`
 
   @media (max-width: 480px) {
     margin-bottom: 1.25rem;
-
     p { font-size: 1rem; line-height: 1.7; }
   }
 `;
 
 export const SectionTitle = styled.h3`
   font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: ${tokens.inkMid};
   margin: 0;
 
   @media (max-width: 480px) {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
   }
 `;
 
@@ -1045,11 +965,12 @@ export const TechCard = styled.li`
   align-items: center;
   gap: 6px;
   font-family: 'EB Garamond', serif;
-  font-size: 0.95rem;
   color: ${tokens.inkMid};
   cursor: default;
   transition: background 0.2s, border-color 0.2s;
   text-align: center;
+  min-height: 120px;
+  justify-content: center;
 
   &:hover {
     background: rgba(139, 110, 70, 0.15);
@@ -1057,8 +978,8 @@ export const TechCard = styled.li`
   }
 
   @media (max-width: 480px) {
-    font-size: 0.88rem;
     padding: 8px 10px;
+    min-height: 100px;
   }
 `;
 
@@ -1086,7 +1007,6 @@ export const Icon = styled.img`
   width: 36px;
   height: 36px;
   object-fit: contain;
-  flex-shrink: 0;
 
   @media (max-width: 480px) {
     width: 28px;

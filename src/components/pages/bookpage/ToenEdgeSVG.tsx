@@ -85,28 +85,34 @@ const BOTTOM_PATHS = [
 interface TornEdgeSVGProps {
   position: 'top' | 'bottom';
   variant?: 0 | 1;
-  /** Desktop scene background — defaults to dark */
+  /**
+   * No longer needed — kept for backwards compatibility so existing
+   * page components don't need to change. Ignored internally.
+   */
   maskColor?: string;
-  /** Mobile mask color — defaults to a warm brown since mobile scene bg matches paper */
-  mobileMaskColor?: string;
 }
 
+/**
+ * Renders a torn / burnt paper edge.
+ *
+ * The mask fill is always the warm brown edge tone (#c4a882) since the
+ * scene background is now paper-coloured on all screen sizes. The torn
+ * path sits on top of the page edge and the fill bleeds into the
+ * surrounding paper, making the edge look genuinely ragged.
+ */
 const TornEdgeSVG: React.FC<TornEdgeSVGProps> = ({
   position,
   variant = 0,
-  maskColor = '#1a1612',
-  mobileMaskColor = '#c9b08a',
 }) => {
-  const isMobile =
-    typeof window !== 'undefined' && window.innerWidth <= 768;
+  // Warm shadow tone — sits naturally against the paper background
+  const edgeFill = '#b8996e';
 
-  const activeMask = isMobile ? mobileMaskColor : maskColor;
   const path = position === 'top' ? TOP_PATHS[variant] : BOTTOM_PATHS[variant];
 
-  // Derive the edge trace path by stripping the fill closure
-  const tracePath = position === 'top'
-    ? path.replace(' L400,0 Z', '').replace('M0,0 L0,6 ', 'M0,6 ')
-    : path.replace(' L400,18 Z', '').replace('M0,18 L0,12 ', 'M0,12 ');
+  const tracePath =
+    position === 'top'
+      ? path.replace(' L400,0 Z', '').replace('M0,0 L0,6 ', 'M0,6 ')
+      : path.replace(' L400,18 Z', '').replace('M0,18 L0,12 ', 'M0,12 ');
 
   return (
     <TornEdge position={position}>
@@ -115,12 +121,14 @@ const TornEdgeSVG: React.FC<TornEdgeSVGProps> = ({
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path d={path} fill={activeMask} />
+        {/* Shadow fill along the tear */}
+        <path d={path} fill={edgeFill} opacity="0.35" />
+        {/* Darker trace line for the burnt edge feel */}
         <path
           d={tracePath}
           fill="none"
-          stroke="rgba(80,50,20,0.28)"
-          strokeWidth="0.8"
+          stroke="rgba(80,50,20,0.4)"
+          strokeWidth="1"
         />
       </svg>
     </TornEdge>
