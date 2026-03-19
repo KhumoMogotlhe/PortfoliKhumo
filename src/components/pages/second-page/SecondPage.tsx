@@ -1,77 +1,195 @@
 
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import type { SecondPageProps } from './SecondPage.types';
 import {
   Section,
   SectionTitle,
-  TechList,
-  TechCard,
-  Icon,
-  TechName,
-  TechDescription,
   Footer,
 } from '../bookpage/styles/BookPage.styles';
 import { BookPageShell } from '../BookPageShell';
 import NextButton from '../../buttons/next-button/NextButton';
 import HelloWorld3D from '../../animations/HelloWorld3D';
 import LanguageJourney from '../../animations/language-journey/LanguageJourney';
+import styled from 'styled-components';
+
 import pythonIcon from '../../../assets/python.png';
 import jsIcon from '../../../assets/js.png';
 import htmlIcon from '../../../assets/html.png';
 import cssIcon from '../../../assets/css.png';
 import awsIcon from '../../../assets/aws.png';
 
-const techs = [
+// ─── Beyond the code grid, will soon move to styles ─────────────────────────────────────────────────────
+
+const BeyondGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 0.75rem;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+`;
+
+const BeyondCard = styled(motion.div)`
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(139, 110, 70, 0.2);
+  border-radius: 4px;
+  background: rgba(139, 110, 70, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover {
+    border-color: rgba(139, 110, 70, 0.4);
+    background: rgba(139, 110, 70, 0.08);
+  }
+`;
+
+const CardTag = styled.span`
+  font-family: 'EB Garamond', serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9a7d5a;
+`;
+
+const CardTitle = styled.h4`
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2a1f0e;
+  margin: 0;
+  line-height: 1.3;
+`;
+
+const CardBody = styled.p`
+  font-family: 'EB Garamond', serif;
+  font-size: 0.92rem;
+  color: #4a3a24;
+  line-height: 1.6;
+  margin: 0;
+`;
+
+const CardAccent = styled.span`
+  font-family: 'EB Garamond', serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: #8b7050;
+  margin-top: auto;
+`;
+
+// ─── Opening line, this too shall move lol ─────────────────────────────────────────────────────────────
+
+const OpeningLine = styled(motion.p)`
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 3vw, 1.35rem);
+  font-style: italic;
+  color: #2a1f0e;
+  line-height: 1.6;
+  margin: 0 0 0.25rem;
+  border-left: 2px solid rgba(139, 110, 70, 0.4);
+  padding-left: 1rem;
+`;
+
+// ─── Icon-only tech row ───────────────────────────────────────────────────────
+
+const IconRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding-top: 0.25rem;
+`;
+
+const TechIcon = styled(motion.img)`
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: saturate(0.65);
+  opacity: 0.8;
+  transition: opacity 0.2s, filter 0.2s, transform 0.2s;
+
+  &:hover {
+    opacity: 1;
+    filter: saturate(1);
+    transform: translateY(-3px);
+  }
+
+  @media (max-width: 480px) {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+const techIcons = [
+  { src: pythonIcon, alt: 'Python' },
+  { src: jsIcon, alt: 'JavaScript' },
+  { src: htmlIcon, alt: 'HTML' },
+  { src: cssIcon, alt: 'CSS' },
+  { src: awsIcon, alt: 'AWS' },
+];
+
+const beyondItems = [
   {
-    name: 'Python',
-    icon: pythonIcon,
-    description: 'Learned problem solving, loops, and OOP fundamentals.',
+    tag: 'SheHacks 2023',
+    title: 'Won a fintech hackathon',
+    body: 'Built a pay-in/pay-out store locator for Mukuru under competition pressure.',
+    accent: 'First place.',
   },
   {
-    name: 'JavaScript',
-    icon: jsIcon,
-    description: 'Created interactive web apps and explored asynchronous logic.',
+    tag: 'WeThinkCode_',
+    title: 'Face of the school',
+    body: 'Managed the front desk — the first person every student, guest and partner met.',
+    accent: 'Trusted before I graduated.',
   },
   {
-    name: 'HTML',
-    icon: htmlIcon,
-    description: 'Built structured and semantic web pages.',
+    tag: 'Mentorship',
+    title: 'Taught what I was learning',
+    body: 'Mentored junior WeThinkCode_ students through the same challenges I was navigating.',
+    accent: 'Teaching sharpens understanding.',
   },
   {
-    name: 'CSS',
-    icon: cssIcon,
-    description: 'Styled responsive layouts and practiced design consistency.',
-  },
-  {
-    name: 'AWS',
-    icon: awsIcon,
-    description: 'Explored cloud deployments and services.',
+    tag: 'Community',
+    title: 'Paid it forward',
+    body: 'Volunteered for the next WeThinkCode_ cohort — before finishing my own programme.',
+    accent: 'Before I even finished.',
   },
 ];
 
-const SecondPage: React.FC<SecondPageProps> = ({ onNext, onPrev }) => {
-  const [showJourney, setShowJourney] = useState(false);
 
+const SecondPage: React.FC<SecondPageProps> = ({ onNext, onPrev }) => {
   return (
     <BookPageShell
       pageNumber="02"
-      chapterLabel="Chapter 2: The Journey Begins"
+      chapterLabel="Chapter 2: The Making Of"
       tearVariant={1}
       onNext={onNext}
       onPrev={onPrev}
     >
       <Section>
+        <OpeningLine
+          initial={{ opacity: 0, x: -12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          "I didn't wait to feel ready."
+        </OpeningLine>
+      </Section>
+
+      <Section>
         <SectionTitle>WeThinkCode_ — 2023</SectionTitle>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
         >
-          In 2023, I began my formal journey into software engineering at
-          WeThinkCode_. This is where I learned how to think in logic,
-          structure, and systems. Coding isn't just syntax—it's problem solving.
+          This is where I learned how to think in logic, structure, and systems.
+          Coding isn't just syntax — it's problem solving.
         </motion.p>
       </Section>
 
@@ -79,53 +197,60 @@ const SecondPage: React.FC<SecondPageProps> = ({ onNext, onPrev }) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
         >
           <SectionTitle>It started simple...</SectionTitle>
           <HelloWorld3D />
         </motion.div>
       </Section>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 0.8 }}
-        onAnimationComplete={() => setShowJourney(true)}
-      >
-        {showJourney && (
+      <Section>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
           <LanguageJourney
             pythonIcon={pythonIcon}
             jsIcon={jsIcon}
             htmlIcon={htmlIcon}
           />
-        )}
-      </motion.div>
+        </motion.div>
+      </Section>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 11, duration: 0.8 }}
-      >
-        <Section>
-          <SectionTitle>The Foundation</SectionTitle>
-          <TechList>
-            {techs.map((tech, index) => (
-              <motion.div
-                key={tech.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 11 + index * 0.15 }}
-              >
-                <TechCard>
-                  <Icon src={tech.icon} alt={`${tech.name} logo`} />
-                  <TechName>{tech.name}</TechName>
-                  <TechDescription>{tech.description}</TechDescription>
-                </TechCard>
-              </motion.div>
-            ))}
-          </TechList>
-        </Section>
-      </motion.div>
+      <Section>
+        <SectionTitle>Beyond the code</SectionTitle>
+        <BeyondGrid>
+          {beyondItems.map((item, index) => (
+            <BeyondCard
+              key={item.tag}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
+            >
+              <CardTag>{item.tag}</CardTag>
+              <CardTitle>{item.title}</CardTitle>
+              <CardBody>{item.body}</CardBody>
+              <CardAccent>{item.accent}</CardAccent>
+            </BeyondCard>
+          ))}
+        </BeyondGrid>
+      </Section>
+
+      <Section>
+        <IconRow>
+          {techIcons.map((tech, index) => (
+            <TechIcon
+              key={tech.alt}
+              src={tech.src}
+              alt={tech.alt}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 0.8, y: 0 }}
+              transition={{ delay: 0.9 + index * 0.07, duration: 0.4 }}
+            />
+          ))}
+        </IconRow>
+      </Section>
 
       <Footer>
         <NextButton onClick={onNext} label="next" />

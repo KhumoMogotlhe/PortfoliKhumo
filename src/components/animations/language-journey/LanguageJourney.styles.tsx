@@ -1,54 +1,48 @@
+
 import styled from 'styled-components';
-import { motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export const JourneyContainer = styled.div`
-  margin: 2rem 0;
-  min-height: 200px;
+  margin: 1rem 0 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-`;
-
-export const StoryText = styled(motion.p)`
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #333;
+  gap: 1rem;
 `;
 
 export const LanguageScene = styled(motion.div)`
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  background: #f9f9f9;
-  border-radius: 12px;
-  border-left: 4px solid;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 1rem 1.25rem;
+  border-left: 2px solid rgba(139, 110, 70, 0.3);
+  background: rgba(139, 110, 70, 0.04);
+  border-radius: 0 4px 4px 0;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: rgba(139, 110, 70, 0.6);
+  }
 `;
 
-export const PythonScene = styled(LanguageScene)`
-  border-color: #3776ab;
-`;
-
-export const JavaScriptScene = styled(LanguageScene)`
-  border-color: #f7df1e;
-`;
-
-export const WebScene = styled(LanguageScene)`
-  border-color: #e34c26;
-`;
+export const PythonScene = styled(LanguageScene)``;
+export const JavaScriptScene = styled(LanguageScene)``;
+export const WebScene = styled(LanguageScene)``;
 
 export const IconContainer = styled(motion.div)`
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 2px;
 `;
 
 export const Icon = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: saturate(0.7);
 `;
 
 export const SceneContent = styled.div`
@@ -56,13 +50,24 @@ export const SceneContent = styled.div`
 `;
 
 export const SceneTitle = styled.h3`
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: #222;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2a1f0e;
+  margin: 0 0 0.3rem;
 `;
 
 export const SceneDescription = styled.p`
-  font-size: 0.95rem;
-  color: #555;
-  line-height: 1.5;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.98rem;
+  color: #4a3a24;
+  line-height: 1.7;
+  margin: 0;
+
+  @media (max-width: 480px) {
+    font-size: 0.92rem;
+  }
 `;
+
+// Unused but kept for type compat
+export const StoryText = styled(motion.p)``;
