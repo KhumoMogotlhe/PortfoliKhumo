@@ -369,3 +369,16 @@ export const Page = styled.div<{ isFlipping: boolean }>`
     `}
 `;
 
+export const PageHeader = styled.div`
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    padding-bottom: 0.75rem;
+  }
+  @media (max-width: 480px) {
+    padding-bottom: 0.5rem;
+  } 
+
+`;
