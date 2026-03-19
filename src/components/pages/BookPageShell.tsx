@@ -16,15 +16,10 @@ import {
 import TornEdgeSVG from './bookpage/ToenEdgeSVG';
 
 interface BookPageShellProps {
-  /** e.g. "01", "02" */
   pageNumber: string;
-  /** e.g. "Portfolio" or "Chapter 2: The Journey Begins" */
   chapterLabel?: string;
-  /** 0 or 1 — alternates the torn edge silhouette between pages */
   tearVariant?: 0 | 1;
-  /** The scene background — must match TornEdgeSVG maskColor */
   sceneColor?: string;
-  /** Called after the flip animation completes */
   onFlipComplete?: () => void;
   children: React.ReactNode;
 }

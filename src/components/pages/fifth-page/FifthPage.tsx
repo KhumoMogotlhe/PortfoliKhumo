@@ -118,7 +118,6 @@ const FifthPage: React.FC<FifthPageProps> = ({ onNext, onPrev }) => {
         </motion.p>
       </Section>
 
-      {/* Company header with real logo */}
       <CompanyHeader
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -129,7 +128,6 @@ const FifthPage: React.FC<FifthPageProps> = ({ onNext, onPrev }) => {
         <CompanyRole>Frontend Developer Intern</CompanyRole>
       </CompanyHeader>
 
-      {/* Polaroid photos */}
       <PolaroidGallery>
         <Polaroid
           rotate={-4}
@@ -152,7 +150,6 @@ const FifthPage: React.FC<FifthPageProps> = ({ onNext, onPrev }) => {
         </Polaroid>
       </PolaroidGallery>
 
-      {/* Timeline */}
       <Section>
         <SectionTitle>The Journey</SectionTitle>
         <InternshipTimeline items={timelineData} />
@@ -172,13 +169,11 @@ const FifthPage: React.FC<FifthPageProps> = ({ onNext, onPrev }) => {
         <PhoneCaption>MTN recharge — shipped to production</PhoneCaption>
       </PhoneMockupWrapper>
 
-      {/* Projects */}
       <Section>
         <SectionTitle>Key Projects</SectionTitle>
         <ProjectShowcase projects={projects} />
       </Section>
 
-      {/* Takeaway */}
       <HighlightBox
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}

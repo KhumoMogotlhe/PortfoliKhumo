@@ -114,7 +114,6 @@ const BookPage: React.FC<BookPageProps> = ({ onNext }) => {
   };
 
   const handleAnimationEnd = () => {
-    // Wait for the flip to fully complete before handing off
     onNext?.();
   };
 
@@ -122,7 +121,6 @@ const BookPage: React.FC<BookPageProps> = ({ onNext }) => {
     <Scene>
       <BookWrapper>
         <BookInner>
-          {/* Depth layers — sit behind the real page */}
           <StackLayer depth={3} />
           <StackLayer depth={2} />
           <StackLayer depth={1} />
@@ -132,13 +130,11 @@ const BookPage: React.FC<BookPageProps> = ({ onNext }) => {
             isFlipping={isFlipping}
             onAnimationEnd={handleAnimationEnd}
           >
-            {/* Structural overlays */}
             <Spine />
             <Vignette />
             <ScorchCorner corner="tl" />
             <ScorchCorner corner="br" />
 
-            {/* Torn edges — variant 0 for page 1 */}
             <TornEdgeSVG position="top" variant={0} maskColor="#1a1612" />
             <TornEdgeSVG position="bottom" variant={0} maskColor="#1a1612" />
 
