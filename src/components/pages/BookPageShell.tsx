@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Scene,
   BookWrapper,
@@ -20,41 +20,16 @@ interface BookPageShellProps {
   chapterLabel?: string;
   tearVariant?: 0 | 1;
   sceneColor?: string;
-  onFlipComplete?: () => void;
   children: React.ReactNode;
 }
 
-/**
- * BookPageShell
- *
- * Wraps any page's content with the full book chrome:
- *   Scene → BookWrapper → BookInner → StackLayers → Page
- *   + Spine, Vignette, ScorchCorners, TornEdges, PageHeader
- *
- * Usage:
- *   <BookPageShell pageNumber="02" chapterLabel="Chapter 2: The Journey Begins">
- *     <Section>...</Section>
- *   </BookPageShell>
- */
 const BookPageShell: React.FC<BookPageShellProps> = ({
   pageNumber,
   chapterLabel = 'Portfolio',
   tearVariant = 0,
   sceneColor = '#1a1612',
-  onFlipComplete,
   children,
 }) => {
-  const [isFlipping, setIsFlipping] = useState(false);
-
-  const flip = () => {
-    if (isFlipping) return;
-    setIsFlipping(true);
-  };
-
-  const handleAnimationEnd = () => {
-    onFlipComplete?.();
-  };
-
   return (
     <Scene>
       <BookWrapper>
@@ -63,7 +38,7 @@ const BookPageShell: React.FC<BookPageShellProps> = ({
           <StackLayer depth={2} />
           <StackLayer depth={1} />
 
-          <Page isFlipping={isFlipping} onAnimationEnd={handleAnimationEnd}>
+          <Page>
             <Spine />
             <Vignette />
             <ScorchCorner corner="tl" />
