@@ -2,13 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import type { FourthPageProps } from './FourthPage.types';
 import {
-  // Scene,
-  ChapterTitle,
   Footer,
-  PageContent,
-  PageHeader,
-  PageNumber,
-  Scene,
   Section,
   SectionTitle,
 } from '../bookpage/styles/BookPage.styles';
