@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+
 export const BaseContainer = styled.div`
   position: relative;
   display: flex;
@@ -181,3 +182,190 @@ export const ArrowSVG = styled.svg`
     display: none;
   }
 `;
+
+
+
+export const ChapterTitle = styled.h1`
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  font-style: italic;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.25rem;
+  }
+`;
+
+
+
+
+export const Section = styled.div`
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    line-height: 1.6;
+    color: #444;
+
+    @media (max-width: 480px) {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+  }
+`;
+
+export const SubSectionTitle = styled.h3`
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
+`;
+
+export const SectionTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.1rem;
+  }
+`;
+
+export const TechList = styled.ul`
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  padding-left: 0;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+`;
+
+export const TechCard = styled.div`
+  width: 100%;
+  min-height: 180px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  @media (max-width: 768px) {
+    min-height: 160px;
+    padding: 0.75rem;
+  }
+
+  @media (max-width: 480px) {
+    min-height: 140px;
+    padding: 0.5rem;
+    gap: 0.25rem;
+  }
+`;
+
+export const Icon = styled.img`
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (max-width: 480px) {
+    width: 32px;
+    height: 32px;
+  }
+`;
+
+export const TechName = styled.h4`
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
+`;
+
+export const TechDescription = styled.p`
+  font-size: 0.85rem;
+  text-align: center;
+  color: #555;
+  margin: 0;
+  line-height: 1.4;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+`;
+
+export const BookWrapper = styled.div`
+  perspective: 1500px;
+`;
+
+export const Page = styled.div<{ isFlipping: boolean }>`
+  transform-origin: left;
+  transition: transform 0.8s ease;
+
+  ${({ isFlipping }) =>
+    isFlipping &&
+    `
+      transform: rotateY(-180deg);
+    `}
+`;
+
