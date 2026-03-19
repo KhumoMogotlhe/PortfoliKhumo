@@ -59,6 +59,8 @@ const SecondPage: React.FC<SecondPageProps> = ({ onNext, onPrev }) => {
       pageNumber="02"
       chapterLabel="Chapter 2: The Journey Begins"
       tearVariant={1}
+      onNext={onNext}
+      onPrev={onPrev}
     >
       <Section>
         <SectionTitle>WeThinkCode_ — 2023</SectionTitle>

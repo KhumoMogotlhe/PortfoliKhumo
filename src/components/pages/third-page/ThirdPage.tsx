@@ -18,12 +18,15 @@ const ThirdPage: React.FC<ThirdPageProps> = ({ onNext, onPrev }) => {
       pageNumber="03"
       chapterLabel="Chapter 3: Problem Solving"
       tearVariant={0}
+      onNext={onNext}
+      onPrev={onPrev}
     >
       <Section>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
+          
         >
           <p>
             Code is just syntax. The real skill? Breaking down complex problems

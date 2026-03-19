@@ -24,6 +24,8 @@ const FourthPage: React.FC<FourthPageProps> = ({ onNext, onPrev }) => {
       pageNumber="03"
       chapterLabel="Chapter 4: The Cloud"
       tearVariant={0}
+      onNext={onNext}
+      onPrev={onPrev}
     >
       <Section>
         <motion.div

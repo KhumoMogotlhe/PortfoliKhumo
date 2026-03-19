@@ -1,60 +1,4 @@
-// import React from 'react';
-// import {
-//   ArrowSVG,
-//   BaseContainer,
-//   ButtonPrompt,
-//   Footer,
-//   IntroBlock,
-//   IntroText,
-//   PageContent,
-//   PageNumber,
-//   PromptText
-// } from './styles/BookPage.styles';
-
-// import NextButton from '../../buttons/next-button/NextButton';
-// import type { BookPageProps } from './BookPage.types';
-
-// const BookPage: React.FC<BookPageProps> = ({ onNext }) => {
-//   return (
-//     <BaseContainer>
-//       <PageContent>
-//         <IntroBlock>
-//           <h1>Khumo Mogotlhe</h1>
-//           <p>Software Engineer</p>
-
-//           <IntroText>
-//             I build thoughtful digital experiences. <br />
-//             I build for the web. <br />
-//             I run. I box. I cook. <br />
-//             I create — in more ways than one.
-//           </IntroText>
-//         </IntroBlock>
-//       </PageContent>
-
-//       <Footer>
-//         <ButtonPrompt>
-//           <PromptText>
-//             Built as a reusable component. <br />
-//             It moves the story forward
-//           </PromptText>
-
-//           <ArrowSVG viewBox="0 0 100 50">
-//             <path d="M 5 25 Q 50 10, 85 25" />
-//             <polygon points="85,25 78,20 78,30" />
-//           </ArrowSVG>
-//         </ButtonPrompt>
-
-//         <NextButton onClick={onNext} label="Next" />
-
-//         <PageNumber>- 01 -</PageNumber>
-//       </Footer>
-//     </BaseContainer>
-//   );
-// };
-
-// export default BookPage;
-
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Scene,
   BookWrapper,
@@ -77,44 +21,123 @@ import {
   Vignette,
   ScorchCorner,
 } from './styles/BookPage.styles';
-
 import TornEdgeSVG from './ToenEdgeSVG';
 import NextButton from '../../buttons/next-button/NextButton';
 import type { BookPageProps } from './BookPage.types';
+import styled, { keyframes, css } from 'styled-components';
 
-/**
- * BookPage — Page 1 of the portfolio book.
- *
- * Architecture notes:
- * ─────────────────────────────────────────────────────────────────────────────
- * • The "stacked pages" effect comes from three absolutely-positioned StackLayer
- *   divs offset behind the real Page. They use real divs (not box-shadow) so
- *   they don't overflow the container on mobile.
- *
- * • The torn / burnt edges are TornEdgeSVG components. Each renders an SVG
- *   path filled with the scene background color (#1a1612) so the jagged mask
- *   makes the page look genuinely ragged — not just a clip-path cut.
- *
- * • Page turn: when isFlipping is true the Page styled-component runs the
- *   flipForward keyframe (0° → −180°). onAnimationEnd calls onNext so the
- *   parent can mount the next page. The button is disabled during animation
- *   to prevent double-fires.
- *
- * • Mobile: no clip-path, no box-shadow offsets that extend beyond the
- *   container. Stack layers are clamped via transform translate only.
- * ─────────────────────────────────────────────────────────────────────────────
- */
+const curlIn = keyframes`
+  0%   { transform: perspective(1200px) rotateY(0deg); opacity: 1; }
+  60%  { transform: perspective(1200px) rotateY(-90deg); opacity: 0.6; }
+  100% { transform: perspective(1200px) rotateY(-180deg); opacity: 0; }
+`;
+
+const SwipeablePage = styled(Page)<{ swiping: boolean }>`
+  transform-origin: left center;
+
+  ${({ swiping }) =>
+    swiping &&
+    css`
+      animation: ${curlIn} 0.45s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+    `}
+`;
+
+const curlPulse = keyframes`
+  0%   { transform: rotate(-2deg) scale(1); }
+  50%  { transform: rotate(-6deg) scale(1.04); }
+  100% { transform: rotate(-2deg) scale(1); }
+`;
+
+const CornerCurl = styled.div<{ visible: boolean }>`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(
+      135deg,
+      transparent 50%,
+      rgba(139, 110, 70, 0.18) 50%
+    );
+    border-top-left-radius: 4px;
+    z-index: 20;
+    pointer-events: none;
+    transform-origin: bottom right;
+    opacity: ${({ visible }) => (visible ? 1 : 0)};
+    transition: opacity 0.3s;
+
+    ${({ visible }) =>
+      visible &&
+      css`
+        animation: ${curlPulse} 1.8s ease-in-out infinite;
+      `}
+  }
+`;
+
+const SwipeHint = styled.div<{ visible: boolean }>`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    font-family: 'EB Garamond', serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: rgba(139, 110, 70, 0.7);
+    pointer-events: none;
+    z-index: 100;
+    opacity: ${({ visible }) => (visible ? 1 : 0)};
+    transition: opacity 0.5s;
+  }
+`;
+
+const MIN_SWIPE_DISTANCE = 60;
+const MAX_VERTICAL_DRIFT = 80;
+
 const BookPage: React.FC<BookPageProps> = ({ onNext }) => {
   const [isFlipping, setIsFlipping] = useState(false);
-  const pageRef = useRef<HTMLDivElement>(null);
+  const [swiping, setSwiping] = useState(false);
+  const [showHint, setShowHint] = useState(true);
+  const touchStartX = useRef<number>(0);
+  const touchStartY = useRef<number>(0);
 
   const handleFlip = () => {
-    if (isFlipping) return;
+    if (isFlipping || swiping) return;
     setIsFlipping(true);
   };
 
   const handleAnimationEnd = () => {
     onNext?.();
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+
+    if (Math.abs(deltaY) > MAX_VERTICAL_DRIFT) return;
+    if (Math.abs(deltaX) < MIN_SWIPE_DISTANCE) return;
+    if (deltaX > 0) return;
+
+    setShowHint(false);
+    setSwiping(true);
+    setTimeout(() => {
+      setSwiping(false);
+      onNext?.();
+    }, 450);
   };
 
   return (
@@ -125,18 +148,22 @@ const BookPage: React.FC<BookPageProps> = ({ onNext }) => {
           <StackLayer depth={2} />
           <StackLayer depth={1} />
 
-          <Page
-            ref={pageRef}
+          <SwipeablePage
             isFlipping={isFlipping}
+            swiping={swiping}
             onAnimationEnd={handleAnimationEnd}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             <Spine />
             <Vignette />
             <ScorchCorner corner="tl" />
             <ScorchCorner corner="br" />
 
-            <TornEdgeSVG position="top" variant={0} maskColor="#1a1612" />
-            <TornEdgeSVG position="bottom" variant={0} maskColor="#1a1612" />
+            <TornEdgeSVG position="top" variant={0} />
+            <TornEdgeSVG position="bottom" variant={0} />
+
+            <CornerCurl visible={showHint} />
 
             <PageContent>
               <PageHeader>
@@ -172,14 +199,17 @@ const BookPage: React.FC<BookPageProps> = ({ onNext }) => {
                   <NextButton
                     onClick={handleFlip}
                     label="Next"
-                    disabled={isFlipping}
                   />
                 </ButtonRow>
               </Footer>
             </PageContent>
-          </Page>
+          </SwipeablePage>
         </BookInner>
       </BookWrapper>
+
+      <SwipeHint visible={showHint}>
+        swipe to turn the page →
+      </SwipeHint>
     </Scene>
   );
 };

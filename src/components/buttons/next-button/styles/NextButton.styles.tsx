@@ -1,25 +1,37 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const StoryButton = styled.button<{position: "left" | "right"}>`
-  position: absolute;
-  bottom: 2rem;
-  ${(props) => (props.position === "left" ? "left: 3rem;" : "right: 3rem;")}
-  background: pink;
-  color: red;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
+export const StoryButton = styled.button<{ position?: 'left' | 'right' }>`
+  position: relative;
+  background: transparent;
+  color: #8b7050;
+  border: 1px solid rgba(139, 110, 70, 0.35);
+  padding: 0.6rem 1.4rem;
+  border-radius: 3px;
   cursor: pointer;
+  font-family: 'EB Garamond', Georgia, serif;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
 
   &:hover {
-    transform: translateY(-2px); // subtle hover lift
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: rgba(139, 110, 70, 0.08);
+    border-color: rgba(139, 110, 70, 0.6);
+    color: #2a1f0e;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0px);
   }
 
   &::after {
-    content: ${(props) => (props.position === "left" ? "' ←'" : "' →'")};
+    content: ${({ position }) => (position === 'left' ? "' ←'" : "' →'")};
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
   }
 `;
-
