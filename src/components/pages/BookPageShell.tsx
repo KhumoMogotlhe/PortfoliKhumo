@@ -1,0 +1,104 @@
+import React, { useState } from 'react';
+import {
+  Scene,
+  BookWrapper,
+  BookInner,
+  StackLayer,
+  Page,
+  PageContent,
+  PageHeader,
+  ChapterLabel,
+  PageNumber,
+  Spine,
+  Vignette,
+  ScorchCorner,
+} from './bookpage/styles/BookPage.styles';
+import TornEdgeSVG from './bookpage/ToenEdgeSVG';
+
+interface BookPageShellProps {
+  /** e.g. "01", "02" */
+  pageNumber: string;
+  /** e.g. "Portfolio" or "Chapter 2: The Journey Begins" */
+  chapterLabel?: string;
+  /** 0 or 1 — alternates the torn edge silhouette between pages */
+  tearVariant?: 0 | 1;
+  /** The scene background — must match TornEdgeSVG maskColor */
+  sceneColor?: string;
+  /** Called after the flip animation completes */
+  onFlipComplete?: () => void;
+  children: React.ReactNode;
+}
+
+/**
+ * BookPageShell
+ *
+ * Wraps any page's content with the full book chrome:
+ *   Scene → BookWrapper → BookInner → StackLayers → Page
+ *   + Spine, Vignette, ScorchCorners, TornEdges, PageHeader
+ *
+ * Usage:
+ *   <BookPageShell pageNumber="02" chapterLabel="Chapter 2: The Journey Begins">
+ *     <Section>...</Section>
+ *   </BookPageShell>
+ */
+const BookPageShell: React.FC<BookPageShellProps> = ({
+  pageNumber,
+  chapterLabel = 'Portfolio',
+  tearVariant = 0,
+  sceneColor = '#1a1612',
+  onFlipComplete,
+  children,
+}) => {
+  const [isFlipping, setIsFlipping] = useState(false);
+
+  const flip = () => {
+    if (isFlipping) return;
+    setIsFlipping(true);
+  };
+
+  const handleAnimationEnd = () => {
+    onFlipComplete?.();
+  };
+
+  return (
+    <Scene>
+      <BookWrapper>
+        <BookInner>
+          <StackLayer depth={3} />
+          <StackLayer depth={2} />
+          <StackLayer depth={1} />
+
+          <Page isFlipping={isFlipping} onAnimationEnd={handleAnimationEnd}>
+            <Spine />
+            <Vignette />
+            <ScorchCorner corner="tl" />
+            <ScorchCorner corner="br" />
+
+            <TornEdgeSVG
+              position="top"
+              variant={tearVariant}
+              maskColor={sceneColor}
+            />
+            <TornEdgeSVG
+              position="bottom"
+              variant={tearVariant}
+              maskColor={sceneColor}
+            />
+
+            <PageContent>
+              <PageHeader>
+                <ChapterLabel>{chapterLabel}</ChapterLabel>
+                <PageNumber>— {pageNumber} —</PageNumber>
+              </PageHeader>
+
+              {children}
+            </PageContent>
+          </Page>
+        </BookInner>
+      </BookWrapper>
+    </Scene>
+  );
+};
+
+export { BookPageShell };
+export type { BookPageShellProps };

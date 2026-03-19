@@ -2,11 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import type { FourthPageProps } from './FourthPage.types';
 import {
-  BaseContainer,
+  // Scene,
   ChapterTitle,
+  Footer,
   PageContent,
   PageHeader,
   PageNumber,
+  Scene,
   Section,
   SectionTitle,
 } from '../bookpage/styles/BookPage.styles';
@@ -19,29 +21,30 @@ import {
   ServerlessArchitecture,
 } from '../../animations/ArchitectureDiagrams';
 import { CloudGrid, ConceptBox, ConceptText, ConceptTitle } from './FourthPage.styles';
+import { BookPageShell } from '../BookPageShell';
 
 
 const FourthPage: React.FC<FourthPageProps> = ({ onNext, onPrev }) => {
   return (
-    <BaseContainer>
-      <PageContent>
-        <PageHeader>
-          <ChapterTitle>Chapter 4: The Cloud</ChapterTitle>
-        </PageHeader>
-
-        <Section>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <p>
-              Moving from local machines to the cloud changed everything. 
+     <BookPageShell
+      pageNumber="03"
+      chapterLabel="Chapter 4: The Cloud"
+      tearVariant={0}
+    >
+      <Section>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <p>
+             Moving from local machines to the cloud changed everything. 
               Suddenly, applications could scale, be available 24/7, and reach 
               users anywhere. This is where infrastructure became code.
-            </p>
-          </motion.div>
-        </Section>
+          </p>
+        </motion.div>
+      </Section>
+  
 
         <Section>
           <SectionTitle>AWS Services Explored</SectionTitle>
@@ -128,12 +131,13 @@ const FourthPage: React.FC<FourthPageProps> = ({ onNext, onPrev }) => {
             It's infrastructure that adapts to your needs, not the other way around.
           </motion.p>
         </Section>
-      </PageContent>
+      
 
-      <PageNumber>- 4 -</PageNumber>
-      <NextButton onClick={onNext} label="next" />
-      {onPrev && <NextButton onClick={onPrev} label="prev" position="left" />}
-    </BaseContainer>
+     <Footer>
+        <NextButton onClick={onNext} label="next" />
+        {onPrev && <NextButton onClick={onPrev} label="prev" position="left" />}
+      </Footer>
+    </BookPageShell>
   );
 };
 
